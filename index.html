@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mia's I Love You Jar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+<style>
+  /* ===================== Pink & cozy theme ===================== */
+  :root {
+    --bg1: #ffd6e8;
+    --bg2: #ffb3d1;
+    --ink: #7a2e52;
+    --card: #fff5fa;
+    --btn: #ff5fa2;
+    --btn-shadow: #c93b76;
+    --jar-glass: #ffe0ef;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    min-height: 100%;
+    font-family: 'Press Start 2P', system-ui, sans-serif;
+    color: var(--ink);
+    background: linear-gradient(160deg, var(--bg1), var(--bg2));
+    image-rendering: pixelated;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 24px 16px 48px;
+    gap: 20px;
+    overflow-x: hidden;
+  }
+
+  h1 {
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 8px 0 0;
+    text-shadow: 2px 2px 0 #fff;
+  }
+
+  .subtitle {
+    font-size: 8px;
+    line-height: 1.8;
+    opacity: 0.8;
+    margin: 0;
+  }
+
+  /* Pixel jar drawn with crisp SVG rectangles */
+  .jar-wrap {
+    width: 200px;
+    max-width: 70vw;
+    filter: drop-shadow(4px 6px 0 rgba(122, 46, 82, 0.25));
+    transition: transform 0.15s ease;
+  }
+  .jar-wrap.shake { animation: shake 0.4s ease; }
+  @keyframes shake {
+    0%,100% { transform: translateX(0) rotate(0); }
+    25% { transform: translateX(-4px) rotate(-2deg); }
+    75% { transform: translateX(4px) rotate(2deg); }
+  }
+
+  svg { image-rendering: pixelated; width: 100%; height: auto; display: block; }
+
+  /* Message card */
+  .card {
+    background: var(--card);
+    border: 4px solid var(--ink);
+    box-shadow: 6px 6px 0 var(--btn-shadow);
+    max-width: 460px;
+    width: 100%;
+    min-height: 90px;
+    padding: 22px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    line-height: 1.9;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+  .card.show { opacity: 1; transform: translateY(0); }
+
+  /* Button */
+  button {
+    font-family: inherit;
+    font-size: 12px;
+    color: #fff;
+    background: var(--btn);
+    border: none;
+    padding: 16px 22px;
+    cursor: pointer;
+    box-shadow: 0 6px 0 var(--btn-shadow);
+    transition: transform 0.05s ease, box-shadow 0.05s ease;
+  }
+  button:active {
+    transform: translateY(4px);
+    box-shadow: 0 2px 0 var(--btn-shadow);
+  }
+
+  .footer { font-size: 7px; opacity: 0.65; line-height: 1.8; }
+</style>
+</head>
+<body>
+
+  <h1>Mia's I Love You Jar</h1>
+  <p class="subtitle">tap the jar for a little note &lt;3</p>
+
+  <div class="jar-wrap" id="jar" role="button" aria-label="Draw a note">
+    <!-- 16x20 pixel jar -->
+    <svg viewBox="0 0 16 20" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+      <!-- lid -->
+      <rect x="4" y="1" width="8" height="2" fill="#c93b76"/>
+      <rect x="3" y="3" width="10" height="2" fill="#ff5fa2"/>
+      <!-- glass body outline -->
+      <rect x="2" y="5" width="12" height="14" fill="#7a2e52"/>
+      <rect x="3" y="5" width="10" height="13" fill="#ffe0ef"/>
+      <!-- glass shine -->
+      <rect x="4" y="6" width="1" height="9" fill="#fff5fa"/>
+      <!-- little hearts floating inside -->
+      <rect x="6" y="8" width="2" height="1" fill="#ff5fa2"/>
+      <rect x="5" y="9" width="4" height="1" fill="#ff5fa2"/>
+      <rect x="6" y="10" width="2" height="1" fill="#ff5fa2"/>
+      <rect x="10" y="11" width="2" height="1" fill="#ff8ac0"/>
+      <rect x="9" y="12" width="4" height="1" fill="#ff8ac0"/>
+      <rect x="10" y="13" width="2" height="1" fill="#ff8ac0"/>
+      <rect x="5" y="14" width="2" height="1" fill="#ff5fa2"/>
+      <rect x="4" y="15" width="4" height="1" fill="#ff5fa2"/>
+      <rect x="5" y="16" width="2" height="1" fill="#ff5fa2"/>
+    </svg>
+  </div>
+
+  <div class="card" id="card">Press the button to open a note from me &lt;3</div>
+
+  <button id="drawBtn">Open a note &lt;3</button>
+
+  <p class="footer">made with love</p>
+
+<script>
+  /* ============================================================
+     ADD YOUR MESSAGES HERE
+     Just add a new line inside the quotes, ending with a comma.
+     Keep each note between "quotes". That's it!
+     ============================================================ */
+  const messages = [
+    "I love the way you laugh at your own jokes.",
+    "You make ordinary days feel like adventures.",
+    "I still get butterflies when you text me.",
+    "Your hugs are my favorite place in the world.",
+    "Thank you for being exactly, perfectly you.",
+    "I love you more than coffee, and that's a lot.",
+    "You're the best part of every single day.",
+    "I'd choose you in every lifetime, every time.",
+    "Your smile could fix any bad day I'm having.",
+    "I love how safe you make me feel.",
+    "You're my favorite hello and hardest goodbye.",
+    "Being your person is my favorite thing to be.",
+    "I love the little things you do without thinking.",
+    "You make me want to be better, every day.",
+    "Home isn't a place for me, it's you.",
+  ];
+
+  /* ---- logic below; you don't need to edit this part ---- */
+  const card = document.getElementById('card');
+  const jar = document.getElementById('jar');
+  let lastIndex = -1;
+
+  function draw() {
+    if (messages.length === 0) return;
+    let i = Math.floor(Math.random() * messages.length);
+    // avoid repeating the same note twice in a row
+    if (messages.length > 1) {
+      while (i === lastIndex) i = Math.floor(Math.random() * messages.length);
+    }
+    lastIndex = i;
+
+    card.classList.remove('show');
+    jar.classList.remove('shake');
+    void jar.offsetWidth; // restart animation
+    jar.classList.add('shake');
+
+    setTimeout(() => {
+      card.textContent = messages[i];
+      card.classList.add('show');
+    }, 180);
+  }
+
+  document.getElementById('drawBtn').addEventListener('click', draw);
+  jar.addEventListener('click', draw);
+</script>
+</body>
+</html>
